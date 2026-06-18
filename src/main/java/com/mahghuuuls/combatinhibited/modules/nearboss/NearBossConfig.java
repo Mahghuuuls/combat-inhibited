@@ -13,6 +13,12 @@ public class NearBossConfig {
     @Config.Comment("How often to scan (ticks). 20 ticks = 1 second.")
     public int scanPeriodTicks = 20;
 
+    @Config.Comment("If true, check the last matching boss for each player before running a full nearby-entity scan. Disable this to always use the standard scanner.")
+    public boolean optimizeScanner = true;
+
+    @Config.Comment("If true, only bosses the player can currently see can apply or refresh Inhibited. Solid blocks between the player's eyes and the boss prevent a match.")
+    public boolean requireLineOfSight = false;
+
     @Config.Comment("Duration in ticks applied/refreshed by this module.")
     public int durationTicks = 100;
 

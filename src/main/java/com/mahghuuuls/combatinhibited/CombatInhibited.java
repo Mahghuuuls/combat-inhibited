@@ -171,13 +171,17 @@ public class CombatInhibited {
             Set<String> bossList = new HashSet<>(Arrays.asList(NBConfig.bossList));
 
             EntityScanner scanner = new NearbyEntityScanner();
+            if (NBConfig.optimizeScanner) {
+                scanner = new LastMatchEntityScanner(scanner);
+            }
 
             NearBossModule NBModule = new NearBossModule(
                     scanner,
                     NBApplier,
                     bossList,
                     NBConfig.distanceBlocks,
-                    Math.max(1, NBConfig.scanPeriodTicks)
+                    Math.max(1, NBConfig.scanPeriodTicks),
+                    NBConfig.requireLineOfSight
             );
 
             MinecraftForge.EVENT_BUS.register(NBModule);

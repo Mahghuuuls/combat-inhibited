@@ -16,17 +16,20 @@ public final class NearBossModule {
     private final Set<String> bossList;
     private final double distanceBlocks;
     private final int scanPeriodTicks;
+    private final boolean requireLineOfSight;
 
     public NearBossModule(EntityScanner scanner,
                           EffectApplier applier,
                           Set<String> bossList,
                           double distanceBlocks,
-                          int scanPeriodTicks) {
+                          int scanPeriodTicks,
+                          boolean requireLineOfSight) {
         this.scanner = scanner;
         this.applier = applier;
         this.bossList = bossList;
         this.distanceBlocks = distanceBlocks;
         this.scanPeriodTicks = Math.max(1, scanPeriodTicks);
+        this.requireLineOfSight = requireLineOfSight;
     }
 
     @SubscribeEvent
@@ -42,7 +45,10 @@ public final class NearBossModule {
 
         if (bossList == null || bossList.isEmpty()) return;
 
-        boolean foundBoss = scanner.anyMatch(player, distanceBlocks, (p, e, id) -> bossList.contains(id));
+        boolean foundBoss = scanner.anyMatch(player, distanceBlocks, (p, e, id) -> {
+            if (!bossList.contains(id)) return false;
+            return !requireLineOfSight || p.canEntityBeSeen(e);
+        });
         if (foundBoss) {
             applier.apply(player);
         }

@@ -2,20 +2,24 @@ package com.mahghuuuls.combatinhibited;
 
 import com.mahghuuuls.combatinhibited.modules.dealingdamage.DealingDamageConfig;
 import com.mahghuuuls.combatinhibited.modules.dealingdamage.DealingDamageModule;
+import com.mahghuuuls.combatinhibited.modules.encounterclear.EncounterClearConfig;
+import com.mahghuuuls.combatinhibited.modules.encounterclear.EncounterClearModule;
 import com.mahghuuuls.combatinhibited.modules.nearboss.NearBossConfig;
 import com.mahghuuuls.combatinhibited.modules.nearboss.NearBossModule;
 import com.mahghuuuls.combatinhibited.modules.nearenemy.NearEnemyConfig;
 import com.mahghuuuls.combatinhibited.modules.nearenemy.NearEnemyModule;
 import com.mahghuuuls.combatinhibited.modules.takingdamage.TakingDamageConfig;
 import com.mahghuuuls.combatinhibited.modules.takingdamage.TakingDamageModule;
-import com.mahghuuuls.combatinhibited.util.reaplicationlimiter.ApplicationSource;
+import com.mahghuuuls.combatinhibited.util.reapplicationlimiter.ApplicationSource;
 import com.mahghuuuls.combatinhibited.util.effectapplier.EffectApplier;
 import com.mahghuuuls.combatinhibited.util.effectapplier.EffectConfig;
+import com.mahghuuuls.combatinhibited.util.effectapplier.ProximityEffectController;
 import com.mahghuuuls.combatinhibited.util.entityfilter.EntityFilter;
 import com.mahghuuuls.combatinhibited.util.entityfilter.entityconditions.IsNotPlayerCondition;
 import com.mahghuuuls.combatinhibited.util.entityfilter.entityconditions.IsNotExcludedCondition;
 import com.mahghuuuls.combatinhibited.util.entityfilter.entityconditions.IsHostileCondition;
 import com.mahghuuuls.combatinhibited.util.entityscanner.EntityScanner;
+import com.mahghuuuls.combatinhibited.util.entityscanner.LastMatchEntityScanner;
 import com.mahghuuuls.combatinhibited.util.entityscanner.NearbyEntityScanner;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
@@ -29,11 +33,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-@Mod(modid = CombatInhibited.MOD_ID, name = CombatInhibited.NAME, version = CombatInhibited.VERSION, dependencies = CombatInhibited.DEPENDENCIES)
+@Mod(modid = Tags.MOD_ID, name = Tags.MOD_NAME, version = Tags.VERSION, dependencies = CombatInhibited.DEPENDENCIES)
 public class CombatInhibited {
-    public static final String MOD_ID = "combatinhibited";
-    public static final String NAME = "Combat Inhibited";
-    public static final String VERSION = "1.0.1";
+    public static final String MOD_ID = Tags.MOD_ID;
+    public static final String NAME = Tags.MOD_NAME;
+    public static final String VERSION = Tags.VERSION;
     public static final String DEPENDENCIES = "required-after:inhibited";
 
     @EventHandler
@@ -100,6 +104,13 @@ public class CombatInhibited {
 
             EffectConfig NEEffectCfg = new EffectConfig(inhibitedPotion, NEConfig.durationTicks, amplifier, showParticles);
             EffectApplier NEApplier = new EffectApplier(NEEffectCfg, ApplicationSource.NEAR_ENEMY, ModConfig.debugMode);
+            ProximityEffectController NEController = new ProximityEffectController(
+                    NEApplier,
+                    inhibitedPotion,
+                    NEConfig.mode,
+                    NEConfig.refreshWhenRemainingAtMostTicks,
+                    NEConfig.maxReapplications
+            );
 
             EntityFilter NEEntityFilter = buildFilter(
                     NEConfig.includeAll,
@@ -111,20 +122,48 @@ public class CombatInhibited {
             );
 
             EntityScanner scanner = new NearbyEntityScanner();
+            if (NEConfig.optimizeScanner) {
+                scanner = new LastMatchEntityScanner(scanner);
+            }
 
             NearEnemyModule NEModule = new NearEnemyModule(
                     scanner,
                     NEEntityFilter,
-                    NEApplier,
-                    inhibitedPotion,
+                    NEController,
                     NEConfig.distanceBlocks,
                     Math.max(1, NEConfig.scanPeriodTicks),
-                    NEConfig.mode,
-                    NEConfig.refreshWhenRemainingAtMostTicks,
-                    NEConfig.maxReapplications
+                    NEConfig.requireLineOfSight
             );
 
             MinecraftForge.EVENT_BUS.register(NEModule);
+        }
+
+        // Encounter Clear (EC) Module
+        EncounterClearConfig ECConfig = ModConfig.encounterClearConfig;
+        if (ECConfig.isEnabled) {
+
+            EntityFilter ECEntityFilter = buildFilter(
+                    ECConfig.includeAll,
+                    ECConfig.includeIMob,
+                    ECConfig.includeTargetingPlayers,
+                    ECConfig.excludePlayers,
+                    ECConfig.excludeList,
+                    ECConfig.allowList
+            );
+
+            EntityScanner scanner = new NearbyEntityScanner();
+
+            EncounterClearModule ECModule = new EncounterClearModule(
+                    scanner,
+                    ECEntityFilter,
+                    inhibitedPotion,
+                    ECConfig.clearTriggerRadiusBlocks,
+                    ECConfig.scanForRemainingRadiusBlocks,
+                    ECConfig.requireLineOfSight,
+                    ModConfig.debugMode
+            );
+
+            MinecraftForge.EVENT_BUS.register(ECModule);
         }
 
         // Near Boss (NB) Module
@@ -133,17 +172,28 @@ public class CombatInhibited {
 
             EffectConfig NBEffectCfg = new EffectConfig(inhibitedPotion, NBConfig.durationTicks, amplifier, showParticles);
             EffectApplier NBApplier = new EffectApplier(NBEffectCfg, ApplicationSource.NEAR_BOSS, ModConfig.debugMode);
+            ProximityEffectController NBController = new ProximityEffectController(
+                    NBApplier,
+                    inhibitedPotion,
+                    NBConfig.mode,
+                    NBConfig.refreshWhenRemainingAtMostTicks,
+                    NBConfig.maxReapplications
+            );
 
             Set<String> bossList = new HashSet<>(Arrays.asList(NBConfig.bossList));
 
             EntityScanner scanner = new NearbyEntityScanner();
+            if (NBConfig.optimizeScanner) {
+                scanner = new LastMatchEntityScanner(scanner);
+            }
 
             NearBossModule NBModule = new NearBossModule(
                     scanner,
-                    NBApplier,
+                    NBController,
                     bossList,
                     NBConfig.distanceBlocks,
-                    Math.max(1, NBConfig.scanPeriodTicks)
+                    Math.max(1, NBConfig.scanPeriodTicks),
+                    NBConfig.requireLineOfSight
             );
 
             MinecraftForge.EVENT_BUS.register(NBModule);
@@ -159,23 +209,35 @@ public class CombatInhibited {
 
         EntityFilter filter = new EntityFilter();
 
-        if (includeAll || includeIMob || includeTargetingPlayers) {
-            filter.addCondition(new IsHostileCondition(includeAll, includeIMob, includeTargetingPlayers));
-        }
+        filter.addCondition(new IsHostileCondition(includeAll, includeIMob, includeTargetingPlayers));
 
         if (excludePlayers) {
             filter.addCondition(new IsNotPlayerCondition());
         }
 
-        if (excludeList != null && excludeList.length > 0) {
-            Set<String> exclude = new HashSet<>(Arrays.asList(excludeList));
+        Set<String> exclude = mergeEntityLists(ModConfig.globalExcludeList, excludeList);
+        if (!exclude.isEmpty()) {
             filter.addCondition(new IsNotExcludedCondition(exclude));
         }
 
-        if (allowList != null && allowList.length > 0) {
-            filter.setAllowListOverride(new HashSet<>(Arrays.asList(allowList)));
+        Set<String> allow = mergeEntityLists(ModConfig.globalAllowList, allowList);
+        if (!allow.isEmpty()) {
+            filter.setAllowListOverride(allow);
         }
 
         return filter;
+    }
+
+    private static Set<String> mergeEntityLists(String[] globalList, String[] moduleList) {
+        Set<String> merged = new HashSet<>();
+
+        if (globalList != null) {
+            merged.addAll(Arrays.asList(globalList));
+        }
+        if (moduleList != null) {
+            merged.addAll(Arrays.asList(moduleList));
+        }
+
+        return merged;
     }
 }

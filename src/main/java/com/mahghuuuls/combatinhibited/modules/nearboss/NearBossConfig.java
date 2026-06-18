@@ -29,7 +29,7 @@ public class NearBossConfig {
     @Config.Comment("PREVENT_EXPIRING only: only refresh if remaining duration is <= this value (ticks).")
     public int refreshWhenRemainingAtMostTicks = 40;
 
-    @Config.Comment("Maximum number of consecutive applications by this module while the player stays in range. -1 = unlimited.")
+    @Config.Comment("Maximum number of consecutive applications or refreshes by this module while the player stays in range. -1 = unlimited.")
     public int maxReapplications = 3;
 
     @Config.Comment("Boss entity IDs (whitelist). Only these entities are treated as bosses. Format: \"modid:entity_name\".")

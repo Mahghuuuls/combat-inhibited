@@ -13,6 +13,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.HashSet;
@@ -45,7 +46,7 @@ public final class EncounterClearModule {
         this.debugMode = debugMode;
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onLivingDeath(LivingDeathEvent event) {
         if (event == null) return;
         if (!SideUtil.isServer(event.getEntity())) return;

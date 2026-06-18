@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Set;
@@ -28,9 +29,10 @@ public final class DealingDamageModule {
         this.entityFilter = entityFilter;
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onLivingHurt(LivingHurtEvent event) {
         if (SideUtil.isRemote(event.getEntity())) return;
+        if (event.getAmount() <= 0) return;
 
         DamageSource damageSource = event.getSource();
         if (damageSource == null) return;

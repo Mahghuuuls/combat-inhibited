@@ -68,7 +68,7 @@ Defaults:
 - Refresh threshold: 40 ticks (2 seconds) remaining.
 - `optimizeScanner=true`: checks the last matching entity before performing a full scan.
 - `requireLineOfSight=true`: entities behind solid blocks do not match.
-- Maximum consecutive reapplications: 3.
+- Maximum consecutive applications or refreshes: 3.
 
 If a cached entity dies, unloads, leaves the scan area, becomes hidden, or stops matching the filter, the module immediately falls back to a complete scan.
 
@@ -98,7 +98,7 @@ It supports the same two behavior modes as Near Enemy: `APPLY_EFFECT` applies In
 - Default mode: `PREVENT_EXPIRING`.
 - Effect duration: 300 ticks (15 seconds).
 - Refresh threshold: 40 ticks (2 seconds) remaining.
-- Maximum consecutive reapplications: 3.
+- Maximum consecutive applications or refreshes: 3.
 - `optimizeScanner=true`: checks the last matching boss before performing a full scan.
 - `requireLineOfSight=false`: bosses can affect players through walls unless enabled.
 

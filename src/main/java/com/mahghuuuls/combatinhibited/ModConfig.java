@@ -30,6 +30,14 @@ public final class ModConfig {
     @Config.Comment("Clears Inhibited after a matching encounter entity dies and no other matching entities remain near the player.")
     public static final EncounterClearConfig encounterClearConfig = new EncounterClearConfig();
 
+    @Config.Name("global_exclude_list")
+    @Config.Comment("Entity IDs excluded by every module that uses the shared entity filter. These entries are added to each module's own excludeList. An ID present in a global or module allowList still takes priority. Format: \"modid:entity_name\".")
+    public static String[] globalExcludeList = new String[0];
+
+    @Config.Name("global_allow_list")
+    @Config.Comment("Entity IDs allowed by every module that uses the shared entity filter. These entries are added to each module's own allowList and override all include and exclude rules. This does not affect the Near Boss bossList. Format: \"modid:entity_name\".")
+    public static String[] globalAllowList = new String[0];
+
     @Config.Name("debug_mode")
     @Config.Comment("If true, reports when Inhibited is applied and explains encounter-clear decisions in chat.")
     public static boolean debugMode = false;

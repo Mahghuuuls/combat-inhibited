@@ -196,15 +196,29 @@ public class CombatInhibited {
             filter.addCondition(new IsNotPlayerCondition());
         }
 
-        if (excludeList != null && excludeList.length > 0) {
-            Set<String> exclude = new HashSet<>(Arrays.asList(excludeList));
+        Set<String> exclude = mergeEntityLists(ModConfig.globalExcludeList, excludeList);
+        if (!exclude.isEmpty()) {
             filter.addCondition(new IsNotExcludedCondition(exclude));
         }
 
-        if (allowList != null && allowList.length > 0) {
-            filter.setAllowListOverride(new HashSet<>(Arrays.asList(allowList)));
+        Set<String> allow = mergeEntityLists(ModConfig.globalAllowList, allowList);
+        if (!allow.isEmpty()) {
+            filter.setAllowListOverride(allow);
         }
 
         return filter;
+    }
+
+    private static Set<String> mergeEntityLists(String[] globalList, String[] moduleList) {
+        Set<String> merged = new HashSet<>();
+
+        if (globalList != null) {
+            merged.addAll(Arrays.asList(globalList));
+        }
+        if (moduleList != null) {
+            merged.addAll(Arrays.asList(moduleList));
+        }
+
+        return merged;
     }
 }

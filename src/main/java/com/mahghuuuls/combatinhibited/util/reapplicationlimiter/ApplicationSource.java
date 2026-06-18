@@ -1,4 +1,4 @@
-package com.mahghuuuls.combatinhibited.util.reaplicationlimiter;
+package com.mahghuuuls.combatinhibited.util.reapplicationlimiter;
 
 public enum ApplicationSource {
     DEALING_DAMAGE,

@@ -1,8 +1,8 @@
 package com.mahghuuuls.combatinhibited.util.effectapplier;
 
 import com.mahghuuuls.combatinhibited.modules.ProximityMode;
-import com.mahghuuuls.combatinhibited.util.reaplicationlimiter.ApplicationSource;
-import com.mahghuuuls.combatinhibited.util.reaplicationlimiter.ReapplicationLimiter;
+import com.mahghuuuls.combatinhibited.util.reapplicationlimiter.ApplicationSource;
+import com.mahghuuuls.combatinhibited.util.reapplicationlimiter.ReapplicationLimiter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;

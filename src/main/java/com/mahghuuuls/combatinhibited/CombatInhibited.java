@@ -10,7 +10,7 @@ import com.mahghuuuls.combatinhibited.modules.nearenemy.NearEnemyConfig;
 import com.mahghuuuls.combatinhibited.modules.nearenemy.NearEnemyModule;
 import com.mahghuuuls.combatinhibited.modules.takingdamage.TakingDamageConfig;
 import com.mahghuuuls.combatinhibited.modules.takingdamage.TakingDamageModule;
-import com.mahghuuuls.combatinhibited.util.reaplicationlimiter.ApplicationSource;
+import com.mahghuuuls.combatinhibited.util.reapplicationlimiter.ApplicationSource;
 import com.mahghuuuls.combatinhibited.util.effectapplier.EffectApplier;
 import com.mahghuuuls.combatinhibited.util.effectapplier.EffectConfig;
 import com.mahghuuuls.combatinhibited.util.effectapplier.ProximityEffectController;

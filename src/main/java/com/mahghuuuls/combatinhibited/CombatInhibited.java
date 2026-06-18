@@ -178,10 +178,14 @@ public class CombatInhibited {
             NearBossModule NBModule = new NearBossModule(
                     scanner,
                     NBApplier,
+                    inhibitedPotion,
                     bossList,
                     NBConfig.distanceBlocks,
                     Math.max(1, NBConfig.scanPeriodTicks),
-                    NBConfig.requireLineOfSight
+                    NBConfig.requireLineOfSight,
+                    NBConfig.mode,
+                    NBConfig.refreshWhenRemainingAtMostTicks,
+                    NBConfig.maxReapplications
             );
 
             MinecraftForge.EVENT_BUS.register(NBModule);

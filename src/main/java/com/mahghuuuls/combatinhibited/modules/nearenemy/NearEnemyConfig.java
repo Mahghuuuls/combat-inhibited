@@ -1,5 +1,6 @@
 package com.mahghuuuls.combatinhibited.modules.nearenemy;
 
+import com.mahghuuuls.combatinhibited.modules.ProximityMode;
 import net.minecraftforge.common.config.Config;
 
 public class NearEnemyConfig {
@@ -8,7 +9,7 @@ public class NearEnemyConfig {
     public boolean isEnabled = true;
 
     @Config.Comment("Behavior mode: APPLY_EFFECT or PREVENT_EXPIRING.")
-    public Mode mode = Mode.PREVENT_EXPIRING;
+    public ProximityMode mode = ProximityMode.PREVENT_EXPIRING;
 
     @Config.Comment("Scan radius in blocks.")
     public double distanceBlocks = 12.0;
@@ -29,7 +30,7 @@ public class NearEnemyConfig {
     public int refreshWhenRemainingAtMostTicks = 40;
 
     @Config.Comment("Maximum number of consecutive reapplications by this module while the player stays in range. -1 = unlimited.")
-    public int maxReapplications = 2;
+    public int maxReapplications = 3;
 
     @Config.Comment("Include rule: treat any nearby living entity as matching.")
     public boolean includeAll = false;

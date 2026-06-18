@@ -1,5 +1,6 @@
 package com.mahghuuuls.combatinhibited.modules.nearenemy;
 
+import com.mahghuuuls.combatinhibited.modules.ProximityMode;
 import com.mahghuuuls.combatinhibited.util.SideUtil;
 import com.mahghuuuls.combatinhibited.util.reaplicationlimiter.ApplicationSource;
 import com.mahghuuuls.combatinhibited.util.effectapplier.EffectApplier;
@@ -26,7 +27,7 @@ public final class NearEnemyModule {
     private final double distanceBlocks;
     private final int scanPeriodTicks;
     private final boolean requireLineOfSight;
-    private final Mode mode;
+    private final ProximityMode mode;
     private final int refreshWhenRemainingAtMostTicks;
 
     private final ReapplicationLimiter reapplicationLimiter;
@@ -38,7 +39,7 @@ public final class NearEnemyModule {
                            double distanceBlocks,
                            int scanPeriodTicks,
                            boolean requireLineOfSight,
-                           Mode mode,
+                           ProximityMode mode,
                            int refreshWhenRemainingAtMostTicks,
                            int maxReapplications) {
 
@@ -50,7 +51,7 @@ public final class NearEnemyModule {
         this.distanceBlocks = distanceBlocks;
         this.scanPeriodTicks = Math.max(1, scanPeriodTicks);
         this.requireLineOfSight = requireLineOfSight;
-        this.mode = (mode == null ? Mode.PREVENT_EXPIRING : mode);
+        this.mode = (mode == null ? ProximityMode.PREVENT_EXPIRING : mode);
         this.refreshWhenRemainingAtMostTicks = Math.max(0, refreshWhenRemainingAtMostTicks);
 
         this.reapplicationLimiter = new ReapplicationLimiter(maxReapplications);
@@ -93,7 +94,7 @@ public final class NearEnemyModule {
         }
 
         // APPLY_EFFECT
-        if (mode == Mode.APPLY_EFFECT) {
+        if (mode == ProximityMode.APPLY_EFFECT) {
             applier.apply(player);
             reapplicationLimiter.recordApplication(playerId);
             return;

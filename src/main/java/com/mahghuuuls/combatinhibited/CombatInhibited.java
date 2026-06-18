@@ -155,6 +155,7 @@ public class CombatInhibited {
                     inhibitedPotion,
                     ECConfig.clearTriggerRadiusBlocks,
                     ECConfig.scanForRemainingRadiusBlocks,
+                    ECConfig.requireLineOfSight,
                     ModConfig.debugMode
             );
 

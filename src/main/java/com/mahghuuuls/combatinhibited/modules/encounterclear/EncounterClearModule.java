@@ -26,6 +26,7 @@ public final class EncounterClearModule {
     private final Potion inhibitedPotion;
     private final double clearTriggerRadiusBlocks;
     private final double scanForRemainingRadiusBlocks;
+    private final boolean requireLineOfSight;
     private final boolean debugMode;
 
     public EncounterClearModule(EntityScanner scanner,
@@ -33,12 +34,14 @@ public final class EncounterClearModule {
                                 Potion inhibitedPotion,
                                 double clearTriggerRadiusBlocks,
                                 double scanForRemainingRadiusBlocks,
+                                boolean requireLineOfSight,
                                 boolean debugMode) {
         this.scanner = scanner;
         this.entityFilter = entityFilter;
         this.inhibitedPotion = inhibitedPotion;
         this.clearTriggerRadiusBlocks = clearTriggerRadiusBlocks;
         this.scanForRemainingRadiusBlocks = scanForRemainingRadiusBlocks;
+        this.requireLineOfSight = requireLineOfSight;
         this.debugMode = debugMode;
     }
 
@@ -88,6 +91,7 @@ public final class EncounterClearModule {
             String[] blockingEntityId = new String[1];
             boolean otherHostilesRemain = scanner.anyMatch(player, scanForRemainingRadiusBlocks, (p, e, id) -> {
                 if (e == deadEntity) return false;
+                if (requireLineOfSight && !p.canEntityBeSeen(e)) return false;
 
                 EntityContext nearbyEntityContext = new EntityContext(p, e, id);
                 boolean matches = entityFilter == null || entityFilter.passes(nearbyEntityContext);

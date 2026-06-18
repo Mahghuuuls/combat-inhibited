@@ -13,6 +13,9 @@ public class EncounterClearConfig {
     @Config.Comment("Remaining-entity scan radius around each checked player, in blocks. Inhibited is cleared only when no living entity matching the rules below is found within this radius.")
     public double scanForRemainingRadiusBlocks = 16.0;
 
+    @Config.Comment("If true, only entities the player can currently see can prevent encounter clearing. Hidden entities behind solid blocks are ignored when scanning for remaining hostiles.")
+    public boolean requireLineOfSight = true;
+
     @Config.Comment("Match every living entity. This makes any living entity's death eligible to trigger clearing, and any living entity near the player prevent clearing. Usually leave this false for hostile-only encounters.")
     public boolean includeAll = false;
 

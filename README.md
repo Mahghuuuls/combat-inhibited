@@ -6,7 +6,7 @@ Combat is detected and managed by independent, configurable modules. This lets m
 
 ## Default Behavior
 
-By default, fighting a hostile mob temporarily prevents you from placing or breaking blocks. The effect lasts 15 seconds, can be refreshed up to three times while a visible enemy remains within 12 blocks, and is removed early when the fight ends with no other hostiles nearby. Enemies behind walls do not keep the effect active, and special boss behavior remains disabled unless configured.
+By default, fighting a hostile mob temporarily prevents you from placing or breaking blocks. The effect lasts 15 seconds, can be refreshed up to three times while a visible enemy remains within 12 blocks, and is removed early when the fight ends with no other visible hostiles nearby. Enemies behind walls do not keep the effect active, and special boss behavior remains disabled unless configured.
 
 ## Entity Matching
 
@@ -80,6 +80,7 @@ Removes Inhibited after a matching hostile dies and no other matching hostiles r
 - Players within 24 blocks of the dead entity are considered.
 - The player credited with the kill is always considered, even when attacking from outside that radius.
 - Each considered player is scanned for remaining hostiles within 16 blocks.
+- `requireLineOfSight=true`: hostiles hidden behind solid blocks do not prevent clearing.
 - The dying entity is explicitly ignored during the remaining-hostile scan.
 
 Clearing is evaluated independently for each player. A player keeps Inhibited if another matching hostile remains near them.

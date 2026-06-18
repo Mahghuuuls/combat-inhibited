@@ -20,7 +20,7 @@ public final class ReapplicationLimiter {
     public void reset(UUID playerId) {
         if (playerId == null) return;
         if (unlimitedApplication) return;
-        reapplicationCounts.put(playerId, 0);
+        reapplicationCounts.remove(playerId);
     }
 
     public boolean canApply(UUID playerId) {

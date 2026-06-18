@@ -1,9 +1,8 @@
 package com.mahghuuuls.combatinhibited.util.entityscanner;
 
-import net.minecraft.entity.EntityList;
+import com.mahghuuuls.combatinhibited.util.EntityUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import java.lang.ref.WeakReference;
@@ -25,8 +24,8 @@ public final class LastMatchEntityScanner implements EntityScanner {
 
         EntityLivingBase cachedEntity = getCachedEntity(player);
         if (isValidCachedEntity(player, cachedEntity, distanceBlocks)) {
-            ResourceLocation key = EntityList.getKey(cachedEntity);
-            if (key != null && match.matches(player, cachedEntity, key.toString())) {
+            String entityId = EntityUtils.getEntityId(cachedEntity);
+            if (match.matches(player, cachedEntity, entityId)) {
                 return true;
             }
         }

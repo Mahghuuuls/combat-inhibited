@@ -21,8 +21,7 @@ public final class ProximityEffectController {
                                      Potion inhibitedPotion,
                                      ProximityMode mode,
                                      int refreshWhenRemainingAtMostTicks,
-                                     int maxReapplications,
-                                     ApplicationSource applicationSource) {
+                                     int maxReapplications) {
         this.applier = applier;
         this.inhibitedPotion = inhibitedPotion;
         this.mode = mode == null ? ProximityMode.PREVENT_EXPIRING : mode;
@@ -31,7 +30,8 @@ public final class ProximityEffectController {
 
         EffectApplyBus.register((player, source) -> {
             if (player == null) return;
-            if (source != applicationSource) {
+            if (source == ApplicationSource.DEALING_DAMAGE
+                    || source == ApplicationSource.TAKING_DAMAGE) {
                 reapplicationLimiter.reset(player.getUniqueID());
             }
         });

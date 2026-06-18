@@ -109,8 +109,7 @@ public class CombatInhibited {
                     inhibitedPotion,
                     NEConfig.mode,
                     NEConfig.refreshWhenRemainingAtMostTicks,
-                    NEConfig.maxReapplications,
-                    ApplicationSource.NEAR_ENEMY
+                    NEConfig.maxReapplications
             );
 
             EntityFilter NEEntityFilter = buildFilter(
@@ -178,8 +177,7 @@ public class CombatInhibited {
                     inhibitedPotion,
                     NBConfig.mode,
                     NBConfig.refreshWhenRemainingAtMostTicks,
-                    NBConfig.maxReapplications,
-                    ApplicationSource.NEAR_BOSS
+                    NBConfig.maxReapplications
             );
 
             Set<String> bossList = new HashSet<>(Arrays.asList(NBConfig.bossList));

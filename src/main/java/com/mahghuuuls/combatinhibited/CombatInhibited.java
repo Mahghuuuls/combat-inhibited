@@ -2,6 +2,8 @@ package com.mahghuuuls.combatinhibited;
 
 import com.mahghuuuls.combatinhibited.modules.dealingdamage.DealingDamageConfig;
 import com.mahghuuuls.combatinhibited.modules.dealingdamage.DealingDamageModule;
+import com.mahghuuuls.combatinhibited.modules.encounterclear.EncounterClearConfig;
+import com.mahghuuuls.combatinhibited.modules.encounterclear.EncounterClearModule;
 import com.mahghuuuls.combatinhibited.modules.nearboss.NearBossConfig;
 import com.mahghuuuls.combatinhibited.modules.nearboss.NearBossModule;
 import com.mahghuuuls.combatinhibited.modules.nearenemy.NearEnemyConfig;
@@ -125,6 +127,33 @@ public class CombatInhibited {
             );
 
             MinecraftForge.EVENT_BUS.register(NEModule);
+        }
+
+        // Encounter Clear (EC) Module
+        EncounterClearConfig ECConfig = ModConfig.encounterClearConfig;
+        if (ECConfig.isEnabled) {
+
+            EntityFilter ECEntityFilter = buildFilter(
+                    ECConfig.includeAll,
+                    ECConfig.includeIMob,
+                    ECConfig.includeTargetingPlayers,
+                    ECConfig.excludePlayers,
+                    ECConfig.excludeList,
+                    ECConfig.allowList
+            );
+
+            EntityScanner scanner = new NearbyEntityScanner();
+
+            EncounterClearModule ECModule = new EncounterClearModule(
+                    scanner,
+                    ECEntityFilter,
+                    inhibitedPotion,
+                    ECConfig.clearTriggerRadiusBlocks,
+                    ECConfig.scanForRemainingRadiusBlocks,
+                    ModConfig.debugMode
+            );
+
+            MinecraftForge.EVENT_BUS.register(ECModule);
         }
 
         // Near Boss (NB) Module

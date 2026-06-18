@@ -125,6 +125,7 @@ public class CombatInhibited {
                     inhibitedPotion,
                     NEConfig.distanceBlocks,
                     Math.max(1, NEConfig.scanPeriodTicks),
+                    NEConfig.requireLineOfSight,
                     NEConfig.mode,
                     NEConfig.refreshWhenRemainingAtMostTicks,
                     NEConfig.maxReapplications

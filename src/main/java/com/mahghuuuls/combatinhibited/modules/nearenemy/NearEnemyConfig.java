@@ -19,6 +19,9 @@ public class NearEnemyConfig {
     @Config.Comment("If true, check the last matching entity for each player before running a full nearby-entity scan. Disable this to always use the standard scanner.")
     public boolean optimizeScanner = true;
 
+    @Config.Comment("If true, only entities the player can currently see can apply or refresh Inhibited. Solid blocks between the player's eyes and the entity prevent a match.")
+    public boolean requireLineOfSight = true;
+
     @Config.Comment("Duration in ticks applied/refreshed by this module.")
     public int durationTicks = 300;
 

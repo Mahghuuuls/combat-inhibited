@@ -25,6 +25,7 @@ public final class NearEnemyModule {
 
     private final double distanceBlocks;
     private final int scanPeriodTicks;
+    private final boolean requireLineOfSight;
     private final Mode mode;
     private final int refreshWhenRemainingAtMostTicks;
 
@@ -36,6 +37,7 @@ public final class NearEnemyModule {
                            Potion inhibitedPotion,
                            double distanceBlocks,
                            int scanPeriodTicks,
+                           boolean requireLineOfSight,
                            Mode mode,
                            int refreshWhenRemainingAtMostTicks,
                            int maxReapplications) {
@@ -47,6 +49,7 @@ public final class NearEnemyModule {
 
         this.distanceBlocks = distanceBlocks;
         this.scanPeriodTicks = Math.max(1, scanPeriodTicks);
+        this.requireLineOfSight = requireLineOfSight;
         this.mode = (mode == null ? Mode.PREVENT_EXPIRING : mode);
         this.refreshWhenRemainingAtMostTicks = Math.max(0, refreshWhenRemainingAtMostTicks);
 
@@ -74,6 +77,8 @@ public final class NearEnemyModule {
         UUID playerId = player.getUniqueID();
 
         boolean found = scanner.anyMatch(player, distanceBlocks, (p, e, id) -> {
+            if (requireLineOfSight && !p.canEntityBeSeen(e)) return false;
+
             EntityContext context = new EntityContext(p, e, id);
             return filter == null || filter.passes(context);
         });

@@ -13,6 +13,7 @@ import com.mahghuuuls.combatinhibited.modules.takingdamage.TakingDamageModule;
 import com.mahghuuuls.combatinhibited.util.reaplicationlimiter.ApplicationSource;
 import com.mahghuuuls.combatinhibited.util.effectapplier.EffectApplier;
 import com.mahghuuuls.combatinhibited.util.effectapplier.EffectConfig;
+import com.mahghuuuls.combatinhibited.util.effectapplier.ProximityEffectController;
 import com.mahghuuuls.combatinhibited.util.entityfilter.EntityFilter;
 import com.mahghuuuls.combatinhibited.util.entityfilter.entityconditions.IsNotPlayerCondition;
 import com.mahghuuuls.combatinhibited.util.entityfilter.entityconditions.IsNotExcludedCondition;
@@ -103,6 +104,14 @@ public class CombatInhibited {
 
             EffectConfig NEEffectCfg = new EffectConfig(inhibitedPotion, NEConfig.durationTicks, amplifier, showParticles);
             EffectApplier NEApplier = new EffectApplier(NEEffectCfg, ApplicationSource.NEAR_ENEMY, ModConfig.debugMode);
+            ProximityEffectController NEController = new ProximityEffectController(
+                    NEApplier,
+                    inhibitedPotion,
+                    NEConfig.mode,
+                    NEConfig.refreshWhenRemainingAtMostTicks,
+                    NEConfig.maxReapplications,
+                    ApplicationSource.NEAR_ENEMY
+            );
 
             EntityFilter NEEntityFilter = buildFilter(
                     NEConfig.includeAll,
@@ -121,14 +130,10 @@ public class CombatInhibited {
             NearEnemyModule NEModule = new NearEnemyModule(
                     scanner,
                     NEEntityFilter,
-                    NEApplier,
-                    inhibitedPotion,
+                    NEController,
                     NEConfig.distanceBlocks,
                     Math.max(1, NEConfig.scanPeriodTicks),
-                    NEConfig.requireLineOfSight,
-                    NEConfig.mode,
-                    NEConfig.refreshWhenRemainingAtMostTicks,
-                    NEConfig.maxReapplications
+                    NEConfig.requireLineOfSight
             );
 
             MinecraftForge.EVENT_BUS.register(NEModule);
@@ -168,6 +173,14 @@ public class CombatInhibited {
 
             EffectConfig NBEffectCfg = new EffectConfig(inhibitedPotion, NBConfig.durationTicks, amplifier, showParticles);
             EffectApplier NBApplier = new EffectApplier(NBEffectCfg, ApplicationSource.NEAR_BOSS, ModConfig.debugMode);
+            ProximityEffectController NBController = new ProximityEffectController(
+                    NBApplier,
+                    inhibitedPotion,
+                    NBConfig.mode,
+                    NBConfig.refreshWhenRemainingAtMostTicks,
+                    NBConfig.maxReapplications,
+                    ApplicationSource.NEAR_BOSS
+            );
 
             Set<String> bossList = new HashSet<>(Arrays.asList(NBConfig.bossList));
 
@@ -178,15 +191,11 @@ public class CombatInhibited {
 
             NearBossModule NBModule = new NearBossModule(
                     scanner,
-                    NBApplier,
-                    inhibitedPotion,
+                    NBController,
                     bossList,
                     NBConfig.distanceBlocks,
                     Math.max(1, NBConfig.scanPeriodTicks),
-                    NBConfig.requireLineOfSight,
-                    NBConfig.mode,
-                    NBConfig.refreshWhenRemainingAtMostTicks,
-                    NBConfig.maxReapplications
+                    NBConfig.requireLineOfSight
             );
 
             MinecraftForge.EVENT_BUS.register(NBModule);

@@ -209,9 +209,7 @@ public class CombatInhibited {
 
         EntityFilter filter = new EntityFilter();
 
-        if (includeAll || includeIMob || includeTargetingPlayers) {
-            filter.addCondition(new IsHostileCondition(includeAll, includeIMob, includeTargetingPlayers));
-        }
+        filter.addCondition(new IsHostileCondition(includeAll, includeIMob, includeTargetingPlayers));
 
         if (excludePlayers) {
             filter.addCondition(new IsNotPlayerCondition());

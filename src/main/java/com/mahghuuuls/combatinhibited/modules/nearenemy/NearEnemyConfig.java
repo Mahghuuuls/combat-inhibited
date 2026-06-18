@@ -23,7 +23,7 @@ public class NearEnemyConfig {
     public int refreshWhenRemainingAtMostTicks = 40;
 
     @Config.Comment("Maximum number of consecutive reapplications by this module while the player stays in range. -1 = unlimited.")
-    public int maxReapplications = 3;
+    public int maxReapplications = 2;
 
     @Config.Comment("Include rule: treat any nearby living entity as matching.")
     public boolean includeAll = false;

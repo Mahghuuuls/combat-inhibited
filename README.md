@@ -6,7 +6,7 @@ Combat is detected and managed by independent, configurable modules. This lets m
 
 ## Default Behavior
 
-By default, fighting a hostile mob temporarily prevents you from placing or breaking blocks. The effect lasts 15 seconds, can be refreshed up to two times while a visible enemy remains within 12 blocks, and is removed early when the fight ends with no other hostiles nearby. Enemies behind walls do not keep the effect active, and special boss behavior remains disabled unless configured.
+By default, fighting a hostile mob temporarily prevents you from placing or breaking blocks. The effect lasts 15 seconds, can be refreshed up to three times while a visible enemy remains within 12 blocks, and is removed early when the fight ends with no other hostiles nearby. Enemies behind walls do not keep the effect active, and special boss behavior remains disabled unless configured.
 
 ## Entity Matching
 
@@ -59,14 +59,16 @@ Modes:
 - `APPLY_EFFECT`: applies Inhibited whenever a matching entity is nearby.
 - `PREVENT_EXPIRING`: only refreshes an existing Inhibited effect when it is close to expiring.
 
-Important defaults:
+Defaults:
 
 - Enabled with mode `PREVENT_EXPIRING`.
 - Scan radius: 12 blocks.
 - Scan interval: 20 ticks (1 second).
+- Effect duration: 300 ticks (15 seconds).
+- Refresh threshold: 40 ticks (2 seconds) remaining.
 - `optimizeScanner=true`: checks the last matching entity before performing a full scan.
 - `requireLineOfSight=true`: entities behind solid blocks do not match.
-- Maximum consecutive reapplications: 2.
+- Maximum consecutive reapplications: 3.
 
 If a cached entity dies, unloads, leaves the scan area, becomes hidden, or stops matching the filter, the module immediately falls back to a complete scan.
 
@@ -84,7 +86,7 @@ Clearing is evaluated independently for each player. A player keeps Inhibited if
 
 ### Near Boss
 
-Applies Inhibited while a configured boss is near the player. Boss matching is whitelist-based through `bossList`; there is no automatic boss classification.
+Controls Inhibited while a configured boss is near the player. Boss matching is whitelist-based through `bossList`; there is no automatic boss classification.
 
 It supports the same two behavior modes as Near Enemy: `APPLY_EFFECT` applies Inhibited directly, while `PREVENT_EXPIRING` only refreshes an existing effect near its expiration threshold.
 
@@ -92,9 +94,10 @@ It supports the same two behavior modes as Near Enemy: `APPLY_EFFECT` applies In
 - Default bosses: `minecraft:wither` and `minecraft:ender_dragon`.
 - Scan radius: 24 blocks.
 - Scan interval: 20 ticks (1 second).
-- Default mode: `APPLY_EFFECT`.
-- Default duration: 100 ticks (5 seconds).
-- Maximum consecutive applications: unlimited (`-1`).
+- Default mode: `PREVENT_EXPIRING`.
+- Effect duration: 300 ticks (15 seconds).
+- Refresh threshold: 40 ticks (2 seconds) remaining.
+- Maximum consecutive reapplications: 3.
 - `optimizeScanner=true`: checks the last matching boss before performing a full scan.
 - `requireLineOfSight=false`: bosses can affect players through walls unless enabled.
 
@@ -103,7 +106,3 @@ Near Enemy and Near Boss have independent scanner and line-of-sight settings.
 ## Debug Mode
 
 Set `debug_mode=true` to display chat messages when Inhibited is applied. Encounter Clear also reports whether the effect was removed, the dead entity failed its filter, or another nearby entity prevented clearing.
-
-## License
-
-Combat Inhibited is available under the MIT License. See [LICENSE](LICENSE).

@@ -18,6 +18,7 @@ import com.mahghuuuls.combatinhibited.util.entityfilter.entityconditions.IsNotPl
 import com.mahghuuuls.combatinhibited.util.entityfilter.entityconditions.IsNotExcludedCondition;
 import com.mahghuuuls.combatinhibited.util.entityfilter.entityconditions.IsHostileCondition;
 import com.mahghuuuls.combatinhibited.util.entityscanner.EntityScanner;
+import com.mahghuuuls.combatinhibited.util.entityscanner.LastMatchEntityScanner;
 import com.mahghuuuls.combatinhibited.util.entityscanner.NearbyEntityScanner;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
@@ -113,6 +114,9 @@ public class CombatInhibited {
             );
 
             EntityScanner scanner = new NearbyEntityScanner();
+            if (NEConfig.optimizeScanner) {
+                scanner = new LastMatchEntityScanner(scanner);
+            }
 
             NearEnemyModule NEModule = new NearEnemyModule(
                     scanner,

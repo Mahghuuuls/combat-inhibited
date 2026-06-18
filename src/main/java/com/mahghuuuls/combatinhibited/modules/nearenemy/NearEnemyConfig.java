@@ -16,6 +16,9 @@ public class NearEnemyConfig {
     @Config.Comment("How often to scan (ticks). 20 ticks = 1 second.")
     public int scanPeriodTicks = 20;
 
+    @Config.Comment("If true, check the last matching entity for each player before running a full nearby-entity scan. Disable this to always use the standard scanner.")
+    public boolean optimizeScanner = true;
+
     @Config.Comment("Duration in ticks applied/refreshed by this module.")
     public int durationTicks = 300;
 
